@@ -5,5 +5,5 @@ recipesApp.config(function ($routeProvider) {
     .when("/recipes", {controller: "RecipeListController", templateUrl: "/app/partials/recipe_list.html"})
     .when("/recipes/:recipe_id", {controller: "ViewRecipeController", templateUrl: "/app/partials/view_recipe.html"})
     .when("/", {redirectTo: "/recipes"})
-    .otherwise({redirectTo: "/404_page"});
+    .otherwise({templateUrl: "/app/partials/404_page.html"});
 });
