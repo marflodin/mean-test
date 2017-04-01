@@ -1,19 +1,25 @@
-<div class="alert alert-danger" ng-show="page_load_error"> {{ page_load_error }}</div>
+<div class="alert alert-danger" ng-show="page_load_error">{{ page_load_error }}</div>
 
-<div ng-show="!finished_loading"><h4 style="color: #aaaaaa"> Loading ... please wait a moment </h4></div>
+<div ng-show="!finished_loading">
+    <h4 style="color: #aaaaaa"> Loading ... please wait a moment </h4>
+</div>
 
 <div ng-show="finished_loading">
-  <p>Filter list: <input ng-model="searchFor" size="30"/></p>
+    <p>Filter list: <input ng-model="searchFor" size="30"/></p>
 
-  <div ng-repeat="recipe in recipes | filter:searchFor | orderBy: 'type'"
-       class="recipe panel panel-default">
-    <div class="panel-heading"><a href ng-href="#/recipes/{{recipe.recipe_id}}">{{ recipe.name }} ({{ recipe.type
-      }})</a></div>
-    <div class="panel-body">
-      {{ recipe.summary }}
+    <div ng-repeat="recipe in recipes | filter:searchFor | orderBy: 'type'"
+         class="recipe panel panel-default">
+
+        <div class="panel-heading">
+            <a href ng-href="#/recipes/{{recipe.recipe_id}}">{{ recipe.name }} ({{ recipe.type}})</a>
+        </div>
+
+        <div class="panel-body">{{ recipe.summary }}</div>
+
     </div>
-  </div>
-  <div style="clear: left"></div>
-  <p> There are {{ recipes.length }} recipes so far!</p>
+
+    <div style="clear: left"></div>
+
+    <p> There are {{ recipes.length }} recipes so far!</p>
 
 </div>
