@@ -6,12 +6,12 @@
     $scope.finished_loading = false;
     $scope.page_load_error = null;
 
-    recipeProvider.getRecipeById($routeParams.recipe_id, function (err, recipe) {
+    recipeProvider.getSkiResortById($routeParams.ski_resort_id, function (err, ski_resort) {
       $scope.finished_loading = true;
       if (err) {
         $scope.page_load_error = "Unable to load recipe: " + JSON.stringify(err);
       } else {
-        $scope.recipe = recipe;
+        $scope.ski_resort = ski_resort;
       }
     });
   }

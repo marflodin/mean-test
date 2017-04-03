@@ -7,19 +7,19 @@
 <div ng-show="finished_loading">
     <p>Filter list: <input ng-model="searchFor" size="30"/></p>
 
-    <div ng-repeat="recipe in recipes | filter:searchFor | orderBy: 'type'"
-         class="recipe panel panel-default">
+    <div ng-repeat="ski_resort in ski_resorts | filter:searchFor | orderBy: 'type'"
+         class="ski_resort panel panel-default">
 
         <div class="panel-heading">
-            <a href ng-href="#/recipes/{{recipe.recipe_id}}">{{ recipe.name }} ({{ recipe.type}})</a>
+            <a href ng-href="#/ski_resorts/{{ski_resort.ski_resort_id}}">{{ ski_resort.name }} ({{ ski_resort.type}})</a>
         </div>
 
-        <div class="panel-body">{{ recipe.summary }}</div>
+        <div class="panel-body">{{ ski_resort.summary }}</div>
 
     </div>
 
     <div style="clear: left"></div>
 
-    <p> There are {{ recipes.length }} recipes so far!</p>
+    <p> There are {{ ski_resort.length }} ski resorts so far!</p>
 
 </div>

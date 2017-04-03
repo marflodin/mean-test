@@ -12,8 +12,8 @@ app.use(bodyParser.json());
 app.use(express.static(__dirname + "/../static"));
 
 
-var recipes = [{
-  recipe_id: "pasta_al_pesto",
+var ski_resorts = [{
+  ski_resort_id: "pasta_al_pesto",
   name: 'Pasta al Pesto',
   serves: 2,
   preparation_time: 2,
@@ -24,7 +24,7 @@ var recipes = [{
   preparation: "Boil the pasta, add the sauce."
 },
   {
-    recipe_id: "garilic_pork",
+    ski_resort_id: "garilic_pork",
     name: 'Garlic Pork',
     serves: 2,
     preparation_time: 15,
@@ -36,7 +36,7 @@ var recipes = [{
     preparation: "Chop it all up, fry it all up. Wup wup!"
   },
   {
-    recipe_id: "garilic_broccoli",
+    ski_resort_id: "garilic_broccoli",
     name: 'Garlic Broccoli',
     serves: 2,
     preparation_time: 15,
@@ -48,7 +48,7 @@ var recipes = [{
     preparation: "Boil Broccoli for 2 mins, chop everything up,\n\n fry it all up. Add salt, sugar, and soy sauce."
   },
   {
-    recipe_id: "black_pepper_beef_00131234",
+    ski_resort_id: "black_pepper_beef_00131234",
     name: 'Black Pepper Beef',
     serves: 2,
     preparation_time: 20,
@@ -62,23 +62,23 @@ var recipes = [{
 ];
 
 
-app.get("/v1/recipes.json", function (req, res) {
-  return send_success_resp(res, recipes);
+app.get("/v1/ski_resorts.json", function (req, res) {
+  return send_success_resp(res, ski_resorts);
 });
 
-app.get("/v1/recipes/:recipe_id.json", function (req, res) {
-  for (var i = 0; i < recipes.length; i++) {
-    if (recipes[i].recipe_id == req.params.recipe_id) {
-      return send_success_resp(res, recipes[i]);
+app.get("/v1/ski_resorts/:ski_resort_id.json", function (req, res) {
+  for (var i = 0; i < ski_resorts.length; i++) {
+    if (ski_resorts[i].ski_resort_id == req.params.ski_resort_id) {
+      return send_success_resp(res, ski_resorts[i]);
     }
   }
 
   // If we're still here, we failed to find it.
-  return send_error_resp(res, 404, "no_such_recipe", "Couldn't find a recipe with the given recipe_id.");
+  return send_error_resp(res, 404, "no_such_recipe", "Couldn't find a recipe with the given ski_resort_id.");
 });
 
-app.put("/v1/recipes.json", function (req, res) {
-  var rid = get_unique_recipe_id(req.body);
+app.put("/v1/ski_resorts.json", function (req, res) {
+  var rid = get_unique_ski_resort_id(req.body);
 
   try {
     if (!req.body.name) throw new Error("missing_name");
@@ -88,8 +88,8 @@ app.put("/v1/recipes.json", function (req, res) {
     return send_error_resp(res, 400, e.message, "You sent us an invalid recipe.");
   }
 
-  req.body.recipe_id = rid;
-  recipes.push(JSON.parse(JSON.stringify(req.body)));
+  req.body.ski_resort_id = rid;
+  ski_resorts.push(JSON.parse(JSON.stringify(req.body)));
   send_success_resp(res, req.body);
 });
 
@@ -151,22 +151,22 @@ function _http_code_from_error(error_code) {
 
 // This would be more efficient w hashing instead of array iteration, but
 // we're moving this to a database in a few minutes anyway, so no worries.
-function get_unique_recipe_id(recipe_data) {
-  if (!recipe_data.name) {
+function get_unique_ski_resort_id(ski_resort_data) {
+  if (!ski_resort_data.name) {
     return undefined;
   }
 
-  var proposed_id = recipe_data.name.split(" ").join("_") + "" + (new Date().getTime());
+  var proposed_id = ski_resort_data.name.split(" ").join("_") + "" + (new Date().getTime());
   var unique = false;
   while (!unique) {
     var i;
-    for (i = 0; i < recipes.length; i++) {
-      if (recipes[i].recipe_id == proposed_id) {
+    for (i = 0; i < ski_resorts.length; i++) {
+      if (ski_resorts[i].ski_resort_id == proposed_id) {
         break;
       }
     }
 
-    if (i == recipes.length) {
+    if (i == ski_resorts.length) {
       unique = true;
     } else {
       proposed_id = proposed_id + "" + (new Date().getTime());

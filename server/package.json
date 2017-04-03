@@ -1,6 +1,6 @@
 {
   "name": "recipe_app_server",
-  "description": "Simple backend for our recipes app.",
+  "description": "Simple backend for our ski resorts app.",
   "private": true,
   "dependencies": {
     "async": "1.x",

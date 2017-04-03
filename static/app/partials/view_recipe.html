@@ -7,26 +7,26 @@
 <div ng-show="finished_loading">
 
     <div class="page-header">
-        <h1>{{ recipe.name }} <span class='smaller lighter'>({{ recipe.type }})</span></h1>
+        <h1>{{ ski_resort.name }} <span class='smaller lighter'>({{ ski_resort.type }})</span></h1>
     </div>
 
     <div class="panel panel-default">
         <div class="panel-heading">
-            <div style="float: right">Serves: {{ recipe.serves }}</div>
-            <div><strong>Preparation Time</strong>: {{ recipe.preparation_time }} minute(s)</div>
+            <div style="float: right">Serves: {{ ski_resort.serves }}</div>
+            <div><strong>Preparation Time</strong>: {{ ski_resort.preparation_time }} minute(s)</div>
         </div>
-        <div class="panel-body"> {{ recipe.summary }}</div>
+        <div class="panel-body"> {{ ski_resort.summary }}</div>
     </div>
 
     <div class="bs-callout bs-callout-info">
         <h4>Ingredients</h4>
         <ul>
-            <li ng-repeat="ingredient in recipe.ingredients">{{ ingredient }}</li>
+            <li ng-repeat="ingredient in ski_resort.ingredients">{{ ingredient }}</li>
         </ul>
     </div>
 
     <div class="bs-callout bs-callout-info" style="margin-top: 30px">
         <h4>Preparation</h4>
-        <p class="preparation" style='font-family: Helvetica'> {{ recipe.preparation }} </p>
+        <p class="preparation" style='font-family: Helvetica'> {{ ski_resort.preparation }} </p>
     </div>
 </div>
