@@ -6,37 +6,11 @@ var express = require('express'),
   async = require("async");
 
 var _port = 8082;
-
 var app = express();
 
 app.use(morgan('dev'));
 app.use(bodyParser.json());
 app.use(express.static(__dirname + "/../static"));
-
-
-var ski_resorts = [{
-  ski_resort_id: 'val_thorens',
-  name: 'Val Thorens',
-  country: 'France',
-  image_name: 'val_thorens_thumb.jpg',
-  weather_id: 802
-},
-  {
-    ski_resort_id: "cervinia",
-    name: 'Cervinia',
-    country: 'Italy',
-    image_name: 'zermatt_thumb.jpg',
-    weather_id: 802
-  },
-  {
-    ski_resort_id: "zermatt",
-    name: 'Zermatt',
-    country: 'Switzerland',
-    image_name: 'zermatt_thumb.jpg',
-    weather_id: 501
-  }
-];
-
 
 app.get("/v1/ski_resorts.json", function (req, res) {
   var start = req.query.start ? parseInt(req.query.start) : 0;
@@ -50,7 +24,6 @@ app.get("/v1/ski_resorts.json", function (req, res) {
     }
   });
 });
-
 
 app.get("/v1/ski_resorts/:ski_resort_id.json", function (req, res) {
   for (var i = 0; i < ski_resorts.length; i++) {

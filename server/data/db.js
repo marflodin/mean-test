@@ -3,11 +3,8 @@ var MongoClient = require('mongodb').MongoClient,
     async = require('async'),
     assert = require('assert');
 
-// Connection URL
 var url = 'mongodb://localhost:27017/recipesapp';
-
 var _db;
-
 
 exports.init_db = function (callback) {
     MongoClient.connect(url, function(err, db) {
@@ -19,7 +16,7 @@ exports.init_db = function (callback) {
         exports.ski_resorts = _db.collection("ski_resorts");
         callback(null);
     });
-}    
+};
 
 // Anybody can just grab this and start making queries on it if they want.
 exports.ski_resorts = null;

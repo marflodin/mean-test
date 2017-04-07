@@ -1,4 +1,3 @@
-
 var db = require("./db.js"),
     async = require('async');
 
