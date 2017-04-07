@@ -1,6 +1,8 @@
 var express = require('express'),
   bodyParser = require('body-parser'),
   morgan = require('morgan'),
+  ski_resort_handler = require("./handlers/ski_resorts.js"),
+  db = require("./data/db.js"),
   async = require("async");
 
 var _port = 8082;
@@ -13,58 +15,42 @@ app.use(express.static(__dirname + "/../static"));
 
 
 var ski_resorts = [{
-  ski_resort_id: "pasta_al_pesto",
-  name: 'Pasta al Pesto',
-  serves: 2,
-  preparation_time: 2,
-  cooking_time: 15,
-  ingredients: ["400g spaghetti", "4tbsp pesto sauce", "salt to taste"],
-  type: 'Italian',
-  summary: 'A quick and simple dish for any Italian household.',
-  preparation: "Boil the pasta, add the sauce."
+  ski_resort_id: 'val_thorens',
+  name: 'Val Thorens',
+  country: 'France',
+  image_name: 'val_thorens_thumb.jpg',
+  weather_id: 802
 },
   {
-    ski_resort_id: "garilic_pork",
-    name: 'Garlic Pork',
-    serves: 2,
-    preparation_time: 15,
-    cooking_time: 5,
-    ingredients: ["200g pork loin steak", "6 cloves garlic", "2tbsp vegetable oil",
-      "2tbsp fish sauce", "black pepper to taste", "salt to taste"],
-    type: 'Thai',
-    summary: 'A quick and simple meat dish for any Thai table.',
-    preparation: "Chop it all up, fry it all up. Wup wup!"
+    ski_resort_id: "cervinia",
+    name: 'Cervinia',
+    country: 'Italy',
+    image_name: 'zermatt_thumb.jpg',
+    weather_id: 802
   },
   {
-    ski_resort_id: "garilic_broccoli",
-    name: 'Garlic Broccoli',
-    serves: 2,
-    preparation_time: 15,
-    cooking_time: 2,
-    ingredients: ["400g broccoli", "2 cloves garlic", "2tbsp vegetable oil",
-      "1tsp light soy sauce", "1/4tsp sugar", "1/4tsp salt", "1tsp corn starch"],
-    type: 'Chinese',
-    summary: 'Healthy and full of flavour, a simple dish.',
-    preparation: "Boil Broccoli for 2 mins, chop everything up,\n\n fry it all up. Add salt, sugar, and soy sauce."
-  },
-  {
-    ski_resort_id: "black_pepper_beef_00131234",
-    name: 'Black Pepper Beef',
-    serves: 2,
-    preparation_time: 20,
-    cooking_time: 5,
-    ingredients: ["200g lean beef", "2 cloves garlic", "2tbsp vegetable oil",
-      "1tsp light soy sauce", "1/4tsp sugar", "1/4tsp salt", "1tsp dark soy sauce"],
-    type: 'Chinese',
-    summary: 'Delicious and rich in flavour. A Chinese classic.',
-    preparation: "chop it up, fry it up, try not to set your kitchen on fire."
+    ski_resort_id: "zermatt",
+    name: 'Zermatt',
+    country: 'Switzerland',
+    image_name: 'zermatt_thumb.jpg',
+    weather_id: 501
   }
 ];
 
 
 app.get("/v1/ski_resorts.json", function (req, res) {
-  return send_success_resp(res, ski_resorts);
+  var start = req.query.start ? parseInt(req.query.start) : 0;
+  var pageSize = req.query.pageSize ? parseInt(req.query.pageSize) : 100;
+
+  ski_resort_handler.get_ski_resorts(start, pageSize, function (err, ski_resorts) {
+    if (err) {
+      return send_error_resp(res, err);
+    } else {
+      return send_success_resp(res, ski_resorts);
+    }
+  });
 });
+
 
 app.get("/v1/ski_resorts/:ski_resort_id.json", function (req, res) {
   for (var i = 0; i < ski_resorts.length; i++) {
@@ -74,7 +60,7 @@ app.get("/v1/ski_resorts/:ski_resort_id.json", function (req, res) {
   }
 
   // If we're still here, we failed to find it.
-  return send_error_resp(res, 404, "no_such_recipe", "Couldn't find a recipe with the given ski_resort_id.");
+  return send_error_resp(res, 404, "no_such_ski_resort", "Couldn't find a ski_resort with the given ski_resort_id.");
 });
 
 app.put("/v1/ski_resorts.json", function (req, res) {
@@ -85,7 +71,7 @@ app.put("/v1/ski_resorts.json", function (req, res) {
     if (!req.body.type) throw new Error("missing_type");
     if (!req.body.summary) throw new Error("missing_summary");
   } catch (e) {
-    return send_error_resp(res, 400, e.message, "You sent us an invalid recipe.");
+    return send_error_resp(res, 400, e.message, "You sent us an invalid ski_resort.");
   }
 
   req.body.ski_resort_id = rid;
@@ -93,8 +79,15 @@ app.put("/v1/ski_resorts.json", function (req, res) {
   send_success_resp(res, req.body);
 });
 
-console.error("Starting Server.");
-app.listen(_port);
+db.init_db(function (err) {
+  if (err) {
+    console.error("Error initialising DB, aborting: " + JSON.stringify(err, 0, 2));
+    exit(-1);
+  } else {
+    console.log("Starting Server.");
+    app.listen(_port);
+  }
+});
 
 
 /**
