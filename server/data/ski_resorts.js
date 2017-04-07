@@ -96,7 +96,7 @@ exports.add_ski_resort = function (ski_resort_data, callback) {
 exports.get_ski_resort_by_id = function (ski_resort_id, callback) {
     var found_ski_resort = null;
     
-    var cursor = db.ski_resort.find({ ski_resort_id: ski_resort_id }).limit(1);
+    var cursor = db.ski_resorts.find({ ski_resort_id: ski_resort_id }).limit(1);
     cursor.on("data", function (ski_resort) {
       found_ski_resort = ski_resort;
     });

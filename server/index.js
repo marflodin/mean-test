@@ -26,14 +26,16 @@ app.get("/v1/ski_resorts.json", function (req, res) {
 });
 
 app.get("/v1/ski_resorts/:ski_resort_id.json", function (req, res) {
-  for (var i = 0; i < ski_resorts.length; i++) {
-    if (ski_resorts[i].ski_resort_id == req.params.ski_resort_id) {
-      return send_success_resp(res, ski_resorts[i]);
+  ski_resort_handler.get_ski_resort_by_id(req.params.ski_resort_id, function (err, ski_resort) {
+    if (err) {
+      return send_error_resp(res, err);
+    } else if (!ski_resort) {
+      return send_error_resp(res, 400, "no_such_ski_resort",
+        "That does not appear to be an existing ski_resort in our database.");
+    } else {
+      send_success_resp(res, ski_resort);
     }
-  }
-
-  // If we're still here, we failed to find it.
-  return send_error_resp(res, 404, "no_such_ski_resort", "Couldn't find a ski_resort with the given ski_resort_id.");
+  });
 });
 
 app.put("/v1/ski_resorts.json", function (req, res) {
