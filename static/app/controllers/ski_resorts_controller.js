@@ -20,6 +20,10 @@
     }
 
     get_recipes();
+
+    $scope.getNumber = function(num) {
+      return new Array(num);
+    };
   }
 
   // 2. create the controller and give it $scope.

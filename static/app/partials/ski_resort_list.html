@@ -47,18 +47,19 @@
                             <!--img ng-src="../../images/{{ ski_resort.image_name }}" alt="{{ ski_resort.name }}" class="img-thumbnail"-->
                             <div class="caption">
                                 <h4>
-                                    <a href ng-href="#/ski_resorts/{{ ski_resort.ski_resort_id }}">{{ ski_resort.name }}
-                                        ({{ ski_resort.country}})</a>
+                                    <a href ng-href="#/ski_resorts/{{ ski_resort.ski_resort_id }}">
+                                        {{ ski_resort.name }} ({{ ski_resort.country }})
+                                    </a>
                                 </h4>
                             </div>
                             <div class="ratings">
                                 <p class="pull-right">{{ ski_resort.ratings.length || 0 }} ratings</p>
                                 <p>
-                                    <span class="glyphicon glyphicon-star"></span>
-                                    <span class="glyphicon glyphicon-star"></span>
-                                    <span class="glyphicon glyphicon-star"></span>
-                                    <span class="glyphicon glyphicon-star"></span>
-                                    <span class="glyphicon glyphicon-star"></span>
+                                    <!-- todo: calculate average here instead -->
+                                    <span
+                                            ng-repeat="i in getNumber(ski_resort.ratings.length || 1) track by $index"
+                                            class="glyphicon glyphicon-star">
+                                    </span>
                                 </p>
                             </div>
                         </div>
