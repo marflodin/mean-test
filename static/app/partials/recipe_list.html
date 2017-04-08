@@ -43,7 +43,7 @@
                     <div ng-repeat="ski_resort in ski_resorts | filter:searchFor | orderBy: 'type'"
                          class="ski_resort col-sm-4 col-lg-4 col-md-4">
                         <div class="thumbnail">
-                            <img src="http://placehold.it/320x150" alt="">
+                            <img src="../../images/val_thorens.jpg" alt="">
                             <!--img ng-src="../../images/{{ ski_resort.image_name }}" alt="{{ ski_resort.name }}" class="img-thumbnail"-->
                             <div class="caption">
                                 <h4>
@@ -52,7 +52,7 @@
                                 </h4>
                             </div>
                             <div class="ratings">
-                                <p class="pull-right">15 ratings</p>
+                                <p class="pull-right">{{ ski_resort.ratings.length || 0 }} ratings</p>
                                 <p>
                                     <span class="glyphicon glyphicon-star"></span>
                                     <span class="glyphicon glyphicon-star"></span>

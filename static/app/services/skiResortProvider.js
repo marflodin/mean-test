@@ -1,6 +1,6 @@
 (function () {
 
-  function recipeProvider($http) {
+  function skiResortProvider($http) {
 
     this._server_host = "";
 
@@ -26,6 +26,6 @@
 
   }
 
-  recipesApp.service("recipeProvider", ["$http", recipeProvider]);
+  skiResortsApp.service("skiResortProvider", ["$http", skiResortProvider]);
 
 })();

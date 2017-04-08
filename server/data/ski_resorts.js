@@ -49,50 +49,6 @@ exports.list_ski_resorts = function () {
     });
 };
 
-/**
- * mandatory fields:
- *
- *     name: strin
- *     type: string
- *     summary: string
- *
- * also:
- *
- *     serves: int
- *     preparation_time: int
- *     cooking_time: int
- *     ingredients: [ string, ... ]
- *     preparation: string
- *
- * we add recipe_id in our database code.
- */
-exports.add_ski_resort = function (ski_resort_data, callback) {
-    try {
-        if (!ski_resort_data.name) throw new Error("missing_name");
-        if (!ski_resort_data.type) throw new Error("missing_type");
-        if (!ski_resort_data.summary) throw new Error("missing_summary");
-    } catch (e) {
-        callback({ error: e.message, message: "This is not a valid recipe."});
-    }
-
-    async.waterfall([
-        // get a unique id for this new recipe.
-        function (cb) {
-            get_unique_ski_resort_id(ski_resort_data, cb);
-        },
-        // pass it on to the database.
-        function (ski_resort_data, cb) {
-            console.log("did i get a recipeid?" + ski_resort_id);
-            ski_resort_data = JSON.parse(JSON.stringify(ski_resort_data));
-            ski_resort_data.ski_resort_id = ski_resort_id;
-
-            db.ski_resorts.insertOne(ski_resort_data, { w: 1 }, cb);
-        },
-    ], function (err, results) {
-        callback(err, results);
-    });
-};
-
 exports.get_ski_resort_by_id = function (ski_resort_id, callback) {
     var found_ski_resort = null;
     
@@ -104,46 +60,4 @@ exports.get_ski_resort_by_id = function (ski_resort_id, callback) {
         console.log(JSON.stringify(found_ski_resort, null, 3));
         callback(null, found_ski_resort);
     });
-};
-
-
-
-/**
- * helper function to generate a ski_resort_id for us.
- */
-function get_unique_ski_resort_id (ski_resort_data, callback) {
-    if (!ski_resort_data.name) {
-        return undefined;
-    }
-
-    var ok = false;
-
-    var proposed_id = ski_resort_data.name.split(" ").join("_");
-
-    async.doUntil(
-        function (cb) {
-            proposed_id += "" + (new Date().getTime());
-
-            // only set this to true if we see a ski_resort!
-            ok = true;
-            var cursor = db.ski_resort.find({ ski_resort_id: proposed_id }).limit(1);
-            cursor.on("data", function (ski_resort) {
-                console.log("I got a ski_resort.....");
-                if (ski_resort) {
-                    ok = false;
-                }
-            });
-            cursor.once("end", function () {
-                console.log("Im done.....");
-                cb(null);
-            });
-        },
-        function () {
-            console.log("QUeried about OK: " + ok);
-            return ok;
-        },
-        function (err, results) {
-            callback(err, proposed_id);
-        });
-    
 };
