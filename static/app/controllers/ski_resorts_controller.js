@@ -24,6 +24,21 @@
     $scope.getNumber = function(num) {
       return new Array(num);
     };
+
+    $scope.calculateAverage = function(ratings){
+      var sum = 0;
+      if ("undefined" === typeof ratings || ratings.length == 0) {
+        console.log("variable is undefined, or no ratings has been added");
+        return new Array(1);
+      }
+      console.log("ratings: " + ratings);
+      for(var i = 0; i < ratings.length; i++){
+        console.log("rating: " + ratings[i].score);
+        sum += parseInt(ratings[i].score, 10); //don't forget to add the base
+      }
+      var avg = sum/ratings.length;
+      return new Array(avg);
+    };
   }
 
   // 2. create the controller and give it $scope.

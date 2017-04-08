@@ -57,7 +57,7 @@
                                 <p>
                                     <!-- todo: calculate average here instead -->
                                     <span
-                                            ng-repeat="i in getNumber(ski_resort.ratings.length || 1) track by $index"
+                                            ng-repeat="i in calculateAverage(ski_resort.ratings) track by $index"
                                             class="glyphicon glyphicon-star">
                                     </span>
                                 </p>
